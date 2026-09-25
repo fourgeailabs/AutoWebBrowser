@@ -122,6 +122,14 @@ class BrowserViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    fun saveCurrentSession(url: String, title: String) {
+        if (url.isNotBlank()) {
+            _currentUrl.value = url
+            _currentTitle.value = title.ifBlank { url }
+            saveSession(url, _currentTitle.value)
+        }
+    }
+
     fun handleVoiceCommand(spokenText: String) {
         val lower = spokenText.lowercase().trim()
         when {

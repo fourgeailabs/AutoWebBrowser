@@ -68,4 +68,9 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.saveCurrentSession(viewModel.currentUrl.value, viewModel.currentTitle.value)
+    }
 }

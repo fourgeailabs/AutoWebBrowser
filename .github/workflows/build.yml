@@ -2,9 +2,10 @@ name: Build and Release Android APK
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main", "master", "*" ]
   pull_request:
     branches: [ "main", "master" ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -56,7 +57,7 @@ jobs:
           app-release.apk
         body: |
           ### FourgeAI Labs AutoWeb Browser Release
-          - Version: 1.00.00
+          - Version: 1.01.00
           - Built automatically via GitHub Actions.
           - Licensed under FourgeAI Labs Proprietary Software License Version 1.0.
       env:

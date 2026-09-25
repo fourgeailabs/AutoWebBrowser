@@ -105,7 +105,7 @@ fun SettingsScreen(
                             Icon(Icons.Default.NewReleases, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
                             Spacer(modifier = Modifier.width(16.dp))
                             Column(modifier = Modifier.weight(1f)) {
-                                Text("Version 1.00.00 - Release Notes", style = MaterialTheme.typography.titleMedium)
+                                Text("Version 1.01.00 - Release Notes", style = MaterialTheme.typography.titleMedium)
                                 Text("Tap to view latest updates and change history", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                             Icon(
@@ -118,11 +118,14 @@ fun SettingsScreen(
                             Column(modifier = Modifier.padding(top = 12.dp)) {
                                 Divider()
                                 Spacer(modifier = Modifier.height(8.dp))
-                                Text("• Initial release of AutoWeb Browser for Android & Dashboards.", style = MaterialTheme.typography.bodyMedium)
-                                Text("• Chromium WebView integration with full hardware video acceleration.", style = MaterialTheme.typography.bodyMedium)
-                                Text("• Room DB-backed offline caching and bookmark management.", style = MaterialTheme.typography.bodyMedium)
-                                Text("• Voice command speech recognition interface for safe driving.", style = MaterialTheme.typography.bodyMedium)
-                                Text("• Session persistence preserving last open browser page.", style = MaterialTheme.typography.bodyMedium)
+                                Text("• Version 1.01.00:", style = MaterialTheme.typography.titleSmall)
+                                Text("  - Enhanced automatic state persistence: saves and restores active browser tab/page when backgrounded, closed, or killed by the system.", style = MaterialTheme.typography.bodyMedium)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text("• Version 1.00.00 (Historical):", style = MaterialTheme.typography.titleSmall)
+                                Text("  - Initial release of AutoWeb Browser for Android & Dashboards.", style = MaterialTheme.typography.bodyMedium)
+                                Text("  - Chromium WebView integration with full hardware video acceleration.", style = MaterialTheme.typography.bodyMedium)
+                                Text("  - Room DB-backed offline caching and bookmark management.", style = MaterialTheme.typography.bodyMedium)
+                                Text("  - Voice command speech recognition interface for safe driving.", style = MaterialTheme.typography.bodyMedium)
                             }
                         }
                     }
@@ -148,7 +151,7 @@ fun SettingsScreen(
                             .padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text("AutoWeb Browser v1.00.00", style = MaterialTheme.typography.titleMedium)
+                        Text("AutoWeb Browser v1.01.00", style = MaterialTheme.typography.titleMedium)
                         Text(
                             text = "App Creator: FourgeAI Labs",
                             style = MaterialTheme.typography.bodyMedium,
