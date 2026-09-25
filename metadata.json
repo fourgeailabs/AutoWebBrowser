@@ -1,0 +1,6 @@
+{
+  "name": "AutoWeb Browser",
+  "description": "Chromium web browser optimized for driving and Android Auto / dashboard use with voice commands, offline caching, and video playback.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
