@@ -23,7 +23,7 @@ fun SettingsScreen(
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
-    var whatsNewExpanded by remember { mutableStateOf(false) }
+    var openedUpdateVersion by remember { mutableStateOf<String?>(null) }
 
     Scaffold(
         topBar = {
@@ -78,19 +78,24 @@ fun SettingsScreen(
                 }
             }
 
-            // What's New Section (Collapsible drop-down starting closed)
+            // What's New Section (Drop down that starts closed and closes previously opened one)
             item {
                 Text(
-                    text = "What's New & Updates",
+                    text = "What's New & Release History",
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
             }
+
+            // Version 1.02.00 Update Notice
             item {
+                val isExpanded = openedUpdateVersion == "1.02.00"
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { whatsNewExpanded = !whatsNewExpanded },
+                        .clickable {
+                            openedUpdateVersion = if (isExpanded) null else "1.02.00"
+                        },
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
                 ) {
                     Column(
@@ -102,30 +107,119 @@ fun SettingsScreen(
                             modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(Icons.Default.NewReleases, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
+                            Icon(Icons.Default.NewReleases, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                             Spacer(modifier = Modifier.width(16.dp))
                             Column(modifier = Modifier.weight(1f)) {
-                                Text("Version 1.01.00 - Release Notes", style = MaterialTheme.typography.titleMedium)
-                                Text("Tap to view latest updates and change history", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text("Version 1.02.00 (Current)", style = MaterialTheme.typography.titleMedium)
+                                Text("Android Auto projected car screen support", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                             Icon(
-                                if (whatsNewExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                                contentDescription = "Expand"
+                                if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                                contentDescription = if (isExpanded) "Collapse" else "Expand"
                             )
                         }
 
-                        AnimatedVisibility(visible = whatsNewExpanded) {
+                        AnimatedVisibility(visible = isExpanded) {
                             Column(modifier = Modifier.padding(top = 12.dp)) {
-                                Divider()
+                                HorizontalDivider()
                                 Spacer(modifier = Modifier.height(8.dp))
-                                Text("• Version 1.01.00:", style = MaterialTheme.typography.titleSmall)
-                                Text("  - Enhanced automatic state persistence: saves and restores active browser tab/page when backgrounded, closed, or killed by the system.", style = MaterialTheme.typography.bodyMedium)
+                                Text("• Full Android Auto Projection Support:", style = MaterialTheme.typography.titleSmall)
+                                Text("  - Native Android for Cars App Library (CarAppService & Session) implementation for projected in-vehicle head unit screens.", style = MaterialTheme.typography.bodyMedium)
+                                Text("  - Safe driving templates optimized for glanceable in-car use with oversized buttons and distraction-free design.", style = MaterialTheme.typography.bodyMedium)
+                                Text("  - Car quick-portal for hands-free search, live regional weather, audio/news streams, and one-tap device browser launching.", style = MaterialTheme.typography.bodyMedium)
+                                Text("  - Configured template capability descriptor and host validation for seamless Android Auto recognition.", style = MaterialTheme.typography.bodyMedium)
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Version 1.01.00 Update Notice
+            item {
+                val isExpanded = openedUpdateVersion == "1.01.00"
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            openedUpdateVersion = if (isExpanded) null else "1.01.00"
+                        },
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(Icons.Default.History, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text("Version 1.01.00", style = MaterialTheme.typography.titleMedium)
+                                Text("Session persistence and state recovery", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                            Icon(
+                                if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                                contentDescription = if (isExpanded) "Collapse" else "Expand"
+                            )
+                        }
+
+                        AnimatedVisibility(visible = isExpanded) {
+                            Column(modifier = Modifier.padding(top = 12.dp)) {
+                                HorizontalDivider()
                                 Spacer(modifier = Modifier.height(8.dp))
-                                Text("• Version 1.00.00 (Historical):", style = MaterialTheme.typography.titleSmall)
-                                Text("  - Initial release of AutoWeb Browser for Android & Dashboards.", style = MaterialTheme.typography.bodyMedium)
-                                Text("  - Chromium WebView integration with full hardware video acceleration.", style = MaterialTheme.typography.bodyMedium)
-                                Text("  - Room DB-backed offline caching and bookmark management.", style = MaterialTheme.typography.bodyMedium)
-                                Text("  - Voice command speech recognition interface for safe driving.", style = MaterialTheme.typography.bodyMedium)
+                                Text("• State & Session Persistence:", style = MaterialTheme.typography.titleSmall)
+                                Text("  - Saves and restores active browser tab/page when backgrounded, closed, or recreated by the system.", style = MaterialTheme.typography.bodyMedium)
+                                Text("  - Preserves user reading position and browsing state seamlessly.", style = MaterialTheme.typography.bodyMedium)
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Version 1.00.00 Update Notice
+            item {
+                val isExpanded = openedUpdateVersion == "1.00.00"
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            openedUpdateVersion = if (isExpanded) null else "1.00.00"
+                        },
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(Icons.Default.History, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text("Version 1.00.00", style = MaterialTheme.typography.titleMedium)
+                                Text("Initial release of AutoWeb Browser", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                            Icon(
+                                if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                                contentDescription = if (isExpanded) "Collapse" else "Expand"
+                            )
+                        }
+
+                        AnimatedVisibility(visible = isExpanded) {
+                            Column(modifier = Modifier.padding(top = 12.dp)) {
+                                HorizontalDivider()
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text("• Initial Platform Launch:", style = MaterialTheme.typography.titleSmall)
+                                Text("  - High-performance Chromium WebView browser with hardware acceleration.", style = MaterialTheme.typography.bodyMedium)
+                                Text("  - Room DB offline caching for reading saved web pages without internet.", style = MaterialTheme.typography.bodyMedium)
+                                Text("  - Voice command speech recognition for safe hands-free navigation.", style = MaterialTheme.typography.bodyMedium)
+                                Text("  - Bookmark management and full HTML5 video playback support.", style = MaterialTheme.typography.bodyMedium)
                             }
                         }
                     }
@@ -151,7 +245,7 @@ fun SettingsScreen(
                             .padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text("AutoWeb Browser v1.01.00", style = MaterialTheme.typography.titleMedium)
+                        Text("AutoWeb Browser v1.02.00", style = MaterialTheme.typography.titleMedium)
                         Text(
                             text = "App Creator: FourgeAI Labs",
                             style = MaterialTheme.typography.bodyMedium,
