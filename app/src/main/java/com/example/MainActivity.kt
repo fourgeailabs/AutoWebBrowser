@@ -1,5 +1,6 @@
 package com.example
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,6 +19,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Honor deep links (e.g. car-screen shortcuts tapped while driving)
+        // before the UI is composed so the right page loads first.
+        handleDeepLink(intent)
         enableEdgeToEdge()
         setContent {
             val isDarkMode by viewModel.isDarkMode.collectAsState()
@@ -72,5 +76,20 @@ class MainActivity : ComponentActivity() {
     override fun onStop() {
         super.onStop()
         viewModel.saveCurrentSession(viewModel.currentUrl.value, viewModel.currentTitle.value)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        // The activity runs singleTop: taps on car-screen shortcuts while it is
+        // already open arrive here rather than in onCreate.
+        setIntent(intent)
+        handleDeepLink(intent)
+    }
+
+    private fun handleDeepLink(intent: Intent?) {
+        val data = intent?.data?.toString()
+        if (!data.isNullOrBlank()) {
+            viewModel.handleDeepLink(data)
+        }
     }
 }

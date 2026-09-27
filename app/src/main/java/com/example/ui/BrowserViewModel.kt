@@ -34,6 +34,10 @@ class BrowserViewModel(application: Application) : AndroidViewModel(application)
     private val _voicePrompt = MutableStateFlow("")
     val voicePrompt: StateFlow<String> = _voicePrompt.asStateFlow()
 
+    // Set when the app is opened via a deep link (e.g. a shortcut tapped on the
+    // Android Auto car screen). A pending deep link wins over session restore.
+    private val _pendingDeepLink = MutableStateFlow<String?>(null)
+
     init {
         val dao = BrowserDatabase.getDatabase(application).browserDao()
         repository = BrowserRepository(dao)
@@ -50,13 +54,26 @@ class BrowserViewModel(application: Application) : AndroidViewModel(application)
             initialValue = emptyList()
         )
 
-        // Restore last browser session
+        // Restore last browser session (unless a deep link already claimed the URL)
         viewModelScope.launch {
             val session = repository.getBrowserSession()
-            if (session != null && session.lastUrl.isNotBlank()) {
+            val deepLink = _pendingDeepLink.value
+            _pendingDeepLink.value = null
+            if (deepLink == null && session != null && session.lastUrl.isNotBlank()) {
                 _currentUrl.value = session.lastUrl
                 _currentTitle.value = session.lastTitle
             }
+        }
+    }
+
+    /**
+     * Handles a deep-link URL, e.g. from a shortcut tapped on the Android Auto
+     * car screen while driving. Takes precedence over the restored session.
+     */
+    fun handleDeepLink(url: String?) {
+        if (!url.isNullOrBlank()) {
+            _pendingDeepLink.value = url
+            loadUrl(url)
         }
     }
 
